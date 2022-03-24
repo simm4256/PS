@@ -1,0 +1,89 @@
+1. vector
+
+#include <vector>
+vector<int> v; //빈 벡터
+vector<int> v(n, val); //size n, 초깃값 val로 초기화
+vector<vector<int>> v(n, vector<int>(m, val)); // size n*m, 초깃값 val로 초기화
+push_back 
+iterator가 몇번째? => int dist = distance(v.begin(), iterator) //순서바꾸면 음수
+v1 v2 붙이기 : v1.insert(v1.end(), v2.begin(), v2.end());
+
+2. stack
+
+#include <stack>
+stack<int> s;
+push pop top
+
+
+3. queue
+
+#include <queue>
+queue<int> q;
+push pop front
+
+
+4. priority_queue
+
+#include <queue>
+#include 
+priority_queue<int, vector<int>, less(최댓값) or grater(최솟값)<int> > pq;
+
+//operator 오버라이드 (작은것부터)
+bool operator<(Node a, Node b) {
+    if (a.job[1] == b.job[1])
+        return a.job[0] > b.job[0];
+    return a.job[1] > b.job[1];
+}
+//cmp 직접만들기
+struct cmp {
+    bool operator()(vector<int> a, vector<int> b) {
+        return *(--a.end()) > *(--b.end());
+    }
+};
+priority_queue<vector<int>, vector<vector<int> >, cmp> pq; // 벡터 마지막원소 작은것이 우선
+
+push pop top
+
+
+5. string
+
+s = "A -123"
+s.substr(0,2) = "A "
+stoi(s.substr(2,s.length()-2)) = -123
+
+int a = 123;
+to_string(a) = "123"
+
+push_back(char)
+append(string) //변수에 따라 다르게 사용
+
+
+6. sort
+
+#include <algorithm>
+sort(a.begin(), a.end()) //오름차순
+sort(a.begin(), a.end(), grater<>()) //내림차순
+sort(a.begin(), a.end(), cmp) //cmp함수만들어사용
+
+
+7. find
+
+#include <algorithm>
+vector<int> v;
+find(v.begin(), v.end(), x);
+
+
+8. set
+
+#include <set>
+자동정렬, 중복요소삭제
+insert
+
+
+9. map
+
+#include <map>
+map<key, value>
+key는 단일
+insert find
+m[key] = value //삽입. == m.insert({key, value})

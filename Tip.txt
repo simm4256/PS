@@ -1,0 +1,239 @@
+
+/* ------------------------
+-     0. 각종 수학 팁      -
+---------------------------
+<차례>
+1. x ^ y 분할정복
+2. x C y (Combination)
+3. 소수 구하기 (에라토스테네스의 체)
+4. x mod y (x가 Big Integer 일 때)
+5. GCD(x, y) (최대공약수)
+-------------------------*/
+
+// 1. x ^ y 분할정복 //
+
+ll power(ll x, ll y) { 
+    ll ret = 1;
+    while (y > 0) {
+        if (y % 2) {
+            ret *= x;
+            ret %= P;
+        }
+        x *= x;
+        x %= P;
+        y /= 2;
+    }
+    return ret;
+}
+
+
+
+// 2. x C y (Combination) 구하기 (범위 큼) //
+
+문제에서 모듈러 소수 P가 주어졌을 때
+
+1) 페르마 소정리 이용
+x C y = x! / y!(x-y)!
+fac[x] = (fac[x-1] * x) % P (1 ~ x)
+inverse[y!] = y! ^ (P-2)
+inv[y-1] = inv[y] * y (y-1 ~ 1)
+ans = (fac[x] * inv[y]) % P
+ans = (ans * inv[x-y]) % P
+
+2) 뤼카의 정리 이용 (추천)
+x C y mod P = x,y를 P진법으로 변환 후 각 자리수마다 Combination 후 곱셈
+ex. 
+152 C 35 mod 10
+= 1 C 0 * 5 C 3 * 2 C 5 mod 10;
+//주의점 : 이 경우 x C y 에서 y>x 인 경우가 존재할 수 있으므로 예외처리 필수
+//주의점2: dp[x][y] = (combi(x-1, y-1) + combi(x-1, y)) % m  ...  <<% m 필수>>
+
+
+    
+
+// 3. 소수 구하기 (에라토스테네스의 체) //
+
+for (i = 2; i <= k; i++) {
+    if (!pn[i]) {
+        prime.push_back(i);
+        for (j = i * i; j <= k; j += i)
+            pn[j] = true;
+    }
+}
+
+
+
+// 4. x mod y (x가 Big Integer 일 때) //
+
+int mod(string s, int p)
+{
+	int ret = 0, len = s.size();
+	for (int i=0;i<len;i++) ret = (ret*10 + (s[i]-'0')) % p;
+	return ret;
+}
+
+
+
+// 5. GCD(x, y) (최대공약수) //
+
+x%y가 0이면 y가 최대공약수
+아니면 x=y, y=x%y 이후 반복
+
+
+
+
+
+/* ------------------------
+-      1. 알고리즘들       -
+---------------------------
+<차례>
+1. LIS(순증가하는 가장 긴 수열)
+2. segment tree (합을 저장하는 트리)
+3. network flow - maximum flow (최대 유량)
+4. n차원 배열에서 구간 업데이트 쿼리가 여러번 주어질 때, 최종 n차원 배열 구하는 방법 (누적합)
+5. 게임 이론
+6. 구간합
+-------------------------*/
+
+
+
+// 1. LIS (증가하는 가장 긴 수열) //
+
+1) lower_bound 이용 
+vector<int> v;
+v.push(-INF); //중요!
+if(v.back()<arr[i]) v.push_back(arr[i]), len++;
+else auto it = lower_bound(v.begin(), v.end(), arr[i]); *it = arr[i];
+cout << v.size()-1;
+//주의점 : result != LIS 이다. 오직 LIS length만 알 수 있다.
+
+1-1) 실제 LIS 배열 알아내는 방법
+vector v를 pair<int, int> 로 만들고 first는 value, second는 index로 매핑
+입력배열에 대해 value와 vector v에서 연결된 직전 노드의 index를 저장하는 ex를 가지는 node 배열 생성
+node.value 엔 a[i]값이, node.ex엔 직전노드의 index값이, v.first엔 LIS_DP value값이, v.second엔 i값이 들어간다
+//주의점 : lower_bound 함수 호출 시 pair<int, int> 에 대한 정렬함수 cmp 잊지 말 것
+
+
+
+// 2. segment tree //
+
+1) 기본 segment tree
+int sn;
+for(sn = 1; sn < n; sn *= 2);
+//이 때 시작넘버는 sn, root node의 범위는 1~sn
+
+2) with Lazy Propagate (게으른 전파)
+// 사용처 : 만약 update query가 수열의 단일 노드가 아닌 수열의 범위 안에 모든 노드를 업데이트 하라는 query일 경우
+수열에 대응되는 lazy 배열 생성
+void propagate(int s, int e, int ind){
+    if(lazy[ind]){
+            tree[ind] += (e-s+1) * lazy[ind];
+            if(s!=e){
+            lazy[x*2] += lazy[x];
+            lazy[x*2+1] += lazy[x];
+        }
+        lazy[x] = 0;
+    }
+}
+update 함수와 query 함수 시작 시 먼저 propagate
+// 주의점 : update 진행 시 자식노드 재귀로 update 후 tree[x] = tree[x*2] + tree[x*2+1] 해주어야 리프에서 정상적으로 위까지 전파
+
+
+
+// 3. network flow - maximum flow (최대 유량) //
+
+1) 에드몬드-카프
+BFS로 소스->싱크 경로 탐색 후 플로우
+플로우 시 진행 반대방향 간선에 -flow 추가 (cap은 0
+// 참고 : 경로 탐색을 DFS로 하면 안됨
+
+2) Dininc
+for(ㄱ~ㄷ)
+ㄱ.BFS로 Level Graph 생성. 만약 level[end] == -1 일 경우 종료
+ㄴ.생성된 Level Grpah에서 DFS로 차단 유량 탐색 (차단 유량 : level[from]+1 == level[to] 여야만 유량을 흘릴 수 있음)
+ㄷ.(ㄴ)의 결과값 res가 0이면 ㄱ으로, 1 이상이면 ans+=res 후 (ㄴ) 
+// 주의점 : dfs에서 c = dfs() 일 때 c>0인 경우에만 return c; c==0 이면 전부 안돎
+
+
+
+// 4. n차원 배열에서 구간 업데이트 쿼리가 여러번 주어질 때, 최종 n차원 배열 구하는 방법 //
+
+1차원에서 [0,2]에 2를 더하는 작업은
+0에 2, 3에 -2를 해서 행으로 누적합 시행
+
+2차원에서 [0,0] ~ [2,2] 범위에 2를 더하는 작업은
+(0,0), (3,3)에 2
+(0,3), (3,0)에 -2를 해서 행별, 열별로 누적합 시행
+
+
+
+// 5. 게임 이론 //
+
+현재 게임판의 상황이 주어졌을 때
+가능한 행동들을 모두 시행
+모든 행동이 다 지는 경우 지는 결과 리턴
+이기는 행동이 하나라도 있을 경우 해당 플레이어의 승리
+
+만약 지는 플레이어가 최대한 늦게 지고자 한다면?
+이기는 행동을 하나만 찾는 것이 아니라, 일단 모든 행동을 다 한 뒤
+dfs의 level을 return
+이기는 행동이 하나라도 있다면 이긴 결과의 최솟값을
+하나도 없다면 (=진다면) 진 결과의 최댓값을 return
+
+
+
+// 6. 구간합 //
+
+1) segment tree
+완전이진트리로 구성
+for(sn=1;sn<n;sn*=2) 로 start number 설정
+tree[sn*2] 크기의 공간복잡도 필요
+tree[i] = tree[i*2] + tree[i*2+1]
+
+2) 펜윅 tree
+segment tree보다 공간복잡도 낮음
+tree[n] 크기의 공간복잡도 필요
+bit 연산으로 효율적인 쿼리 수행
+2진수 x의 가장 낮은 1의 위치 = (x & -x)
+update는 i부터 i += (i & -i)
+sum(a, b)는 sum(1, b) - sum(1, a-1) 로 계산
+sum(1, i)는 i부터 i -= (i & -i)
+
+3) segment tree with lazy propagation
+update query가 특정 노드를 변경하는 게 아닌 구간 업데이트 쿼리일 경우 적용
+tree[sn*2], lazy[sn*2] 필요
+update도 top-down 방식으로 진행
+현재 노드의 lazy를 밑으로 propagate시키는 함수 propagate() 필요
+propagate를 할 때에는 해당 노드의 자식 노드 개수 * lazy 만큼 tree를 업데이트
+
+/* ------------------------
+-      2. 코딩 팁들        -
+---------------------------
+<차례>
+1. class operator overloading (with set, multiset, etc...)
+2. 주석 바꿔치기
+-------------------------*/
+
+
+
+// 1. class operator overloading (with set, multiset, etc...) //
+
+class node {
+public:
+	int first;
+	int second;
+	node(int f, int s) :first(f), second(s) {}
+
+	bool operator<(node x) const {
+		return this->first < x.first;
+	}
+};
+set<node> edge[28];
+
+
+// 2. 주석 바꿔치기 //
+
+cout << "a로직입니다.";
+/*
+cout << "b로직입니다.";
+/**/
