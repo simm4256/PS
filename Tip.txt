@@ -212,6 +212,7 @@ propagate를 할 때에는 해당 노드의 자식 노드 개수 * lazy 만큼 t
 <차례>
 1. class operator overloading (with set, multiset, etc...)
 2. 주석 바꿔치기
+3. vs 디버깅할 때 벡터 요소 바로 보는 법
 -------------------------*/
 
 
@@ -237,3 +238,10 @@ cout << "a로직입니다.";
 /*
 cout << "b로직입니다.";
 /**/
+
+
+// 3. vs 디버깅할 때 벡터 요소 바로 보는 법 //
+
+vector<int> v = {1,2,3,4,5};
+
+v._Mypair._Myval2._Myfirst, 5 : 1,2,3,4,5

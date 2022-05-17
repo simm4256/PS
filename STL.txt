@@ -7,6 +7,7 @@ vector<vector<int>> v(n, vector<int>(m, val)); // size n*m, 초깃값 val로 초
 push_back 
 iterator가 몇번째? => int dist = distance(v.begin(), iterator) //순서바꾸면 음수
 v1 v2 붙이기 : v1.insert(v1.end(), v2.begin(), v2.end());
+subvector : v1 = {v.begin(), v.begin()+2}; //{1,2}
 
 2. stack
 
