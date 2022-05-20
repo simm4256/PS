@@ -31,11 +31,12 @@
 	</details>
 
 * `O(n log n)`
-   	<details>
+
+	<details>
 	<summary>병합 정렬 (Merge sort) : stable</summary>
 
-	알고리즘
-	  분할정복
+	알고리즘 : 분할정복
+
 	  1. 분할 : 배열을 절반씩 계속해서 나눈다. (divide)
 	  2. 정복 : 끝까지 나눈 배열을 하나씩 합친다. (merge)
 
@@ -65,25 +66,79 @@
 		return res;
 	}
 
-	vector<int> divide(vector<int> v) {
+	vector<int> merge_sort(vector<int> v) {
 		int size = v.size();
 		if (size <= 1)
 			return v;
-		vector<int> a = divide(vector<int>{v.begin(), v.begin() + size / 2});
-		vector<int> b = divide(vector<int>{v.begin() + size / 2, v.end()});
+
+		//divide
+		vector<int> a = merge_sort(vector<int>{v.begin(), v.begin() + size / 2});
+		vector<int> b = merge_sort(vector<int>{v.begin() + size / 2, v.end()});
+
+		//merge
 		return merge(a, b);
+	}
+
+	vector<int> merge_sort(vector<int> v) {
+		int size = v.size();
+
 	}
 
 	int main() {
 		vector<int> v = { 5,2,4,3,1 };
-		vector<int> sorted_v = divide(v);
+		vector<int> sorted_v = merge_sort(v);
 	}
 	```
 	
 	</details>
 
-	힙 정렬 (Heap sort) : unstable
-	퀵 정렬 (Quick sort) : unstable
+	<details>
+	<summary>힙 정렬 (Heap sort) : unstable</summary>
+
+	알고리즘
+
+	  1. 힙을 구현한다.
+	  2. 배열의 모든 데이터를 힙에 넣는다.
+	  3. 하나씩 pop하며 결과 배열에 채운다.
+
+	```c++
+	#include <algorithm>
+	#include <vector>
+	#include <queue>
+	using namespace std;
+
+	vector<int> heap_sort(vector<int> v) {
+		int size = v.size();
+		priority_queue<int, vector<int>, greater<int> > pq;
+		for (auto it = v.begin(); it != v.end(); it++) {
+			pq.push(*it);
+		}
+		vector<int> res;
+		while (!pq.empty()) {
+			res.push_back(pq.top());
+			pq.pop();
+		}
+		return res;
+	}
+
+	int main() {
+		vector<int> v = { 5,2,4,3,1 };
+		vector<int> sorted_v = heap_sort(v);
+	}
+	```
+
+	</details>
+
+	<details>
+	<summary>퀵 정렬 (Quick sort) : unstable</summary>
+
+	알고리즘
+
+	  1. 배열 내에 한 요소를 선택한다. 이 요소를 pivot이라 부른다.
+	  2. pivot보다 작은 값은 pivot의 왼쪽으로, 큰 값은 오른쪽으로 옮긴다.
+	  3. 왼쪽과 오른쪽 배열에 대해 1~2를 반복한다.
+
+	</details>
 
 
 # using library
@@ -132,6 +187,3 @@ int main() {
 	sort(vn.begin(), vn.end()); //1,2,3
 }
 ```
-
-
-# quick sort
