@@ -1,4 +1,5 @@
 # vector
+<a href="http://www.cplusplus.com/reference/vector/vector/">Reference</a>
 
 ### 사용
 ```c++
@@ -20,23 +21,23 @@ vector<vector<int>> v(10, vector<int>(3, 2)); //값이 2로 초기화된 10*3 �
 vector<pair<int, int>> v; //2차원이지만 두 번쨰 차원의 크기가 2로 고정된 벡터
 ```
 
-### Member Function
+### Member Functions
 
-* 삽입 및 삭제
+* Modifiers
     ```c++
-    v.push_back(val); //v의 맨 뒤에 val라는 요소를 추가함. val의 데이터 타입은 v의 데이터 타입과 같아야 함.
+    v.push_back(T val); //v의 맨 뒤에 요소 val 추가
     v.emplace_back(...args); //push_back과 동작은 같지만, 매개변수로 v의 데이터 타입 변수를 넣는 것이 아닌 해당 데이터 타입의 인수를 풀어서 넣음.
     
-    v.emplace(iterator Where, datatype val); //Where에 val 요소 삽입. 기존 위치에 있던 값은 뒤로 밀려남
-    v.insert(iterator Where, list); //Where에 list 삽입
-    ex)
-        v.insert(v.begin()+1, 5); //2번째 위치에 5가 삽입됨
-        v.insert(v.end(), v2.begin(), v2.end()); //v의 뒤에 v2 이어붙임
+    v.emplace(iterator it, datatype val); //it에 val 요소 삽입. 기존 위치에 있던 값은 뒤로 밀려남
+    
+    v.insert(iterator it, T v); //it에 list 삽입. 이렇게 사용한 insert는 삽입된 곳의 iterator를 반환하므로 it = v.insert(it, val); 로 선언하면 it가 뒤로 밀리지 않고 추가한 것을 가리키게 할 수 있음
+    v.insert(iterator it, iterator input_first, iterator input_last); //it에 [input_first,input_last) 범위의 벡터 삽입. 다른 벡터일 수 있음
 
-    v.erase(iterator Where); //Where의 공간 제거. 제거 후 Where는 제거하기 전의 오른쪽 요소를 가리킴. (오른쪽 요소가 왼쪽으로 붙기 때문)
+    v.erase(iterator it); //it의 공간 제거. 제거 후 it는 제거하기 전의 오른쪽 요소를 가리킴
+    v.erase(iterator first, iterator last); //[first, last) 범위 제거
     ```
 
-* 값 반환
+* Element access
     ```c++
     vector<T> v;
 
@@ -47,7 +48,7 @@ vector<pair<int, int>> v; //2차원이지만 두 번쨰 차원의 크기가 2로
     T : v.back(); //마지막 요소, 즉 *(--v.end()) 반환
     ```
 
-* Iterator 반환
+* Iterators
     <image src="https://upload.cppreference.com/mwiki/images/3/39/range-rbegin-rend.svg"/>
     ```c++
     vector<T>::iterator : v.begin(); //첫 요소의 iterator 반환
@@ -57,17 +58,17 @@ vector<pair<int, int>> v; //2차원이지만 두 번쨰 차원의 크기가 2로
     vector<T>::iterator : v.rend(); //첫 요소의 이전 공간의 iteraotr반환. 첫 요소가 아님에 주의
     ```
 
-* size
+* Size
     ```c++
-    int : v.size(); //요소의 개수 반환 (데이터 사이즈와 관계 없음에 주의)
-    int : v.capacity(); //벡터가 차지하고있는 메모리 용량 반환
+    size_t : v.size(); //요소의 개수 반환 (데이터 사이즈와 관계 없음에 주의)
+    size_t : v.capacity(); //벡터가 차지하고있는 메모리 용량 반환
     v.clear(); //v를 빈 벡터로 만들고 size를 0으로 초기화. 단 capacity는 변하지 않음
     
     bool : v.empty(); //v.size()가 0이면 true, 아니면 false
     ```
 
 
-### 사용 팁
+###  Tips
 
 * 2차원 이상의 벡터는 가급적 사용 지양
   
