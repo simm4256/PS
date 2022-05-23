@@ -29,13 +29,21 @@ bool operator<(Node a, Node b){
     return a.value < b.value; //최대 우선순위
 }
 
-// cmp 만들어 사용하기
+// cmp 만들어 사용하기 : 구버전
 struct cmp {
     bool operator()(vector<int> a, vector<int> b) {
         return *(--a.end()) > *(--b.end());
     }
 };
 priority_queue<vector<int>, vector<vector<int> >, cmp> pq; // 벡터 마지막원소 작은것이 우선
+
+// cmp 만들어 사용하기 : Modern C++ 11
+auto cmp = [](int a, int b) { return ... };
+std::set<int, decltype(cmp)> s(cmp);
+
+// cmp 만들어 사용하기 : Modern C++ 20
+auto cmp = [](int a, int b) { return ... };
+std::set<int, decltype(cmp)> s;
 ```
 
 ### Member Functions
