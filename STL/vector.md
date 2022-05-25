@@ -1,6 +1,12 @@
 # vector
 <a href="http://www.cplusplus.com/reference/vector/vector/">Reference</a>
 
+### `Random Access Iterator`
+
+### 개요
+
+    동적 배열
+
 ### 사용
 ```c++
 #include <vector>
@@ -102,4 +108,9 @@ vector<pair<int, int>> v; //2차원이지만 두 번쨰 차원의 크기가 2로
     ```c++
     vector<int>::iterator it = v.begin()+3;
     int dist = distance(v.begin(), it); //3
+    ```
+
+* VS에서 디버깅할 때 elements 바로 보기
+    ```c++
+    v._Mypair._Myval2._Myfirst, n //n : 개수
     ```

@@ -1,6 +1,12 @@
 # String
 <a href="https://www.cplusplus.com/reference/string/string/">Reference</a>
 
+### `Bidirectional Iterator`
+
+### 개요
+
+    문자열 컨테이너
+
 ### 사용
 
 ```c++
