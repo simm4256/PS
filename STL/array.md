@@ -42,6 +42,21 @@ std::array<int, > arr = {1,2,3,4,5}; //ERROR! array는 반드시 크기를 지�
     T* : arr.data(); //첫번째 요소의 포인터 반환
     ```
 
+* Iterators
+
+    ```c++
+    array<T>::iterator : arr.begin();
+    array<T>::iterator : arr.end();
+
+    array<T>::iterator : arr.rbegin();
+    array<T>::iterator : arr.rend();
+
+    const array<T>::iterator : arr.cbegin();
+    const array<T>::iterator : arr.cend();
+    const array<T>::iterator : arr.crbegin();
+    const array<T>::iterator : arr.crend();
+    ```
+
 ### Tips
 
 * VS에서 디버깅할 때 elements 바로 보기
