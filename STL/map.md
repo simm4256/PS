@@ -7,6 +7,7 @@
 
     key-value 형 자료구조
     key를 기준으로 정렬됨 (red-black tree)
+    key의 중복을 허용하지 않음
 
 ### 사용
 ```c++
@@ -17,6 +18,9 @@ std::map<int, int> m;
 ### 선언 및 초기화
 ```c++
 std::map<KT, VT> m; //key type이 KT이고 value type이 VT인 map 선언
+
+auto cmp = [](int a, int b){return a>b;};
+std::map<KT, VT, decltype(cmp)> m(cmp); //C++11 내림차순
 ```
 ### Member Functions
 
@@ -25,6 +29,7 @@ std::map<KT, VT> m; //key type이 KT이고 value type이 VT인 map 선언
     //insert
     pair<iterator, bool> : m.insert(pair<KT, VT>(key_value, val_value)); //반환되는 pair값은 새로 들어간 곳의 iterator와 insert의 성공 여부. 중복된 key값이 있으면 insert가 실패한다.
     map<KT, VT>::iterator : m.insert(iterator pos, VT val);
+    void : m.insert(InputIterator first, InputIterator last); //[first,last) 범위 삽입
 
     //emplace
     pair<iterator, bool> : m.emplace(...args); //자동으로 key와 value 형식에 맞게 넣어줌
@@ -80,3 +85,18 @@ std::map<KT, VT> m; //key type이 KT이고 value type이 VT인 map 선언
     map<Kt, VT>::iterator : m.lower_bound(KT key_value);
     map<Kt, VT>::iterator : m.upper_bound(KT key_value);
     ```
+
+<br><br>
+# multimap
+<a href="https://www.cplusplus.com/reference/map/multimap/">Reference</a>
+
+### `Bidirectional Iterator`
+
+### 개요
+
+    key값의 중복이 가능한 map
+
+### map과 차이점
+
+* key의 중복 가능
+* operator [] 사용 불가
